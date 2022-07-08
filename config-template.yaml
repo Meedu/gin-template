@@ -1,0 +1,64 @@
+# jwt configuration
+jwt:
+  signing-key: "meedu"
+  expires-time: 604800
+  buffer-time: 86400
+  issuer: "meedu"
+
+# zap logger configuration
+zap:
+  level: "info"
+  prefix: "[server]"
+  format: "console"
+  director: "log"
+  encode-level: "LowercaseColorLevelEncoder"
+  stacktrace-key: "stacktrace"
+  max-age: 180 # 默认日志留存默认以天为单位
+  show-line: true
+  log-in-console: true
+
+# redis configuration
+redis:
+  db: 0
+  addr: "127.0.0.1:6379"
+  password: ""
+
+# system configuration
+system:
+  env: "public" # Change to "develop" to skip authentication for development mode
+  addr: 8787
+  db-type: "mysql"
+  use-redis: false # 使用redis
+  # IP限流:2分钟240次=>2q/s
+  iplimit-count: 240
+  iplimit-time: 120
+
+# mysql connect configuration
+mysql:
+  path: ""
+  port: 3306
+  config: ""
+  db-name: "meedu"
+  username: "root"
+  password: ""
+  max-idle-conns: 10
+  max-open-conns: 100
+  log-mode: ""
+  log-zap: false
+
+# timer task db clear table
+Timer:
+  start: true
+  spec: "@daily" # 定时任务详细配置参考 https://pkg.go.dev/github.com/robfig/cron/v3
+  detail: []
+
+# 跨域配置
+# 需要配合 server/initialize/router.go#L32 使用
+cors:
+  mode: allow-all # 放行模式: allow-all, 放行全部; whitelist, 白名单模式, 来自白名单内域名的请求添加 cors 头; strict-whitelist 严格白名单模式, 白名单外的请求一律拒绝
+  whitelist:
+    - allow-origin: example1.com
+      allow-headers: content-type
+      allow-methods: GET, POST
+      expose-headers: Content-Length, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Content-Type
+      allow-credentials: true
